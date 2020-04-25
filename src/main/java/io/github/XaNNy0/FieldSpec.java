@@ -35,7 +35,21 @@ public class FieldSpec {
     public static class StringFieldSpec extends FieldSpec {
 
         public StringFieldSpec(final String text) {
-            super(text.contains("B"), Integer.parseInt(text.replace("W", "").replace("B", "")));
+            super(text.contains("B"), parseValue(text));
+        }
+
+        public static int parseValue(final String symbol) {
+            if (symbol.equals("W")) {
+                return 0;
+            } else if (symbol.equals("B")) {
+                return 0;
+            } else if (symbol.endsWith("B")) {
+                return Integer.parseInt(symbol.replace("B", ""));
+            } else if (symbol.endsWith("W")) {
+                return Integer.parseInt(symbol.replace("W", ""));
+            } else {
+                return Integer.parseInt(symbol);
+            }
         }
     }
 

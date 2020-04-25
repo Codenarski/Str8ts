@@ -1,6 +1,5 @@
 package io.github.XaNNy0;
 
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -8,17 +7,17 @@ public class BoardTest {
 
     @Test
     public void testArrayWithSizeZero() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new FieldSpec[0][0]));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new SquareArray<>(new FieldSpec[0][0])));
     }
 
     @Test
     public void testArrayWithUnequalLength() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new FieldSpec[5][10]));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new SquareArray<>(new FieldSpec[5][10])));
     }
 
     @Test
     public void testWithEqualLengthButUninitialized() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new FieldSpec[2][2]));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new SquareArray<>(new FieldSpec[2][2])));
     }
 
     @Test
@@ -27,7 +26,7 @@ public class BoardTest {
                 {new FieldSpec.Black(1), new FieldSpec.Black(1)},
                 {new FieldSpec.Black(5), new FieldSpec.Black(5)}
         };
-        final Board board = new Board(fieldSpec);
+        final Board board = new Board(new SquareArray<>(fieldSpec));
     }
 
     @Test
@@ -36,7 +35,7 @@ public class BoardTest {
                 {new FieldSpec.Black(1), null},
                 {new FieldSpec.Black(5), new FieldSpec.Black(5)}
         };
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(fieldSpec));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new SquareArray<>(fieldSpec)));
     }
 
     @Test
@@ -45,7 +44,7 @@ public class BoardTest {
                 null,
                 {new FieldSpec.Black(5), new FieldSpec.Black(5)}
         };
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(fieldSpec));
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Board(new SquareArray<>(fieldSpec)));
     }
 
     @Test
