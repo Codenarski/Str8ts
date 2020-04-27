@@ -16,6 +16,18 @@ public class Field {
         this.candidates = IntStream.rangeClosed(1, size).boxed().collect(Collectors.toSet());
     }
 
+    public boolean isBlack() {
+        return !this.isWhite();
+    }
+
+    public boolean isWhite() {
+        return this.editable;
+    }
+
+    public Set<Integer> getCandidates() {
+        return this.candidates;
+    }
+
     public int getValue() {
         return this.value;
     }

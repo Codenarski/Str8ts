@@ -59,10 +59,10 @@ public enum SolverAlgorithms implements SolverAlgorithm {
 
 
     @Override
-    public boolean solve(final SquareArray<Field> fields) {
+    public boolean solve(final Board board) {
         if (this.solverAlgorithm == null) {
             return true;
         }
-        return this.solverAlgorithm.solve(fields);
+        return this.solverAlgorithm.solve(board);
     }
 }

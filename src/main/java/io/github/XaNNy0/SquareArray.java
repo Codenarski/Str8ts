@@ -40,6 +40,26 @@ public class SquareArray<T> {
         this.forEachWhen(f -> true, consumer);
     }
 
+    public void forEachRow(final RowConsumer<T> consumer) {
+        final int length = this.t.length;
+        for (int x = 0; x < length; x++) {
+            for (int y = 0; y < length; y++) {
+                final ValueAtIndex<T> currentValueAtIndex = new ValueAtIndex<T>(x, y, this.t[x][y]);
+                consumer.consumeField(currentValueAtIndex, y == length - 1);
+            }
+        }
+    }
+
+    public void forEachColumn(final ColumnConsumer<T> consumer) {
+        final int length = this.t.length;
+        for (int x = 0; x < length; x++) {
+            for (int y = 0; y < length; y++) {
+                final ValueAtIndex<T> currentValueAtIndex = new ValueAtIndex<T>(x, y, this.t[y][x]);
+                consumer.consumeField(currentValueAtIndex, x == length - 1);
+            }
+        }
+    }
+
     public static class ValueAtIndex<T> {
         public final int row;
         public final int column;
