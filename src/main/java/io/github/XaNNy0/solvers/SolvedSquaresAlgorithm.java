@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CheckForSolvedSquares implements SolverAlgorithm {
+public class SolvedSquaresAlgorithm implements SolverAlgorithm {
 
     @Override
     public boolean solve(final Board board) {
@@ -26,11 +26,11 @@ public class CheckForSolvedSquares implements SolverAlgorithm {
         });
 
         board.getFields().forEach(v -> {
-            if (v.value.removeCandidate(rowMap.getOrDefault(v.row, new ArrayList<>()))) {
+            if (v.value.removeCandidates(rowMap.getOrDefault(v.row, new ArrayList<>()))) {
                 changed.set(true);
             }
 
-            if (v.value.removeCandidate(columnMap.getOrDefault(v.column, new ArrayList<>()))) {
+            if (v.value.removeCandidates(columnMap.getOrDefault(v.column, new ArrayList<>()))) {
                 changed.set(true);
             }
 

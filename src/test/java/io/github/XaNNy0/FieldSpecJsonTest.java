@@ -37,7 +37,9 @@ public class FieldSpecJsonTest {
 
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
-        board.nextStep();
+        while (true) {
+            board.nextStep();
+        }
     }
 
     public String[][] filterNulls(final String[][] old) {

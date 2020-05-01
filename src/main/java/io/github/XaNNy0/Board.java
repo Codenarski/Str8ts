@@ -11,13 +11,6 @@ public class Board {
     private boolean currentStepSolved = false;
 
     public Board(final SquareArray<FieldSpec> fieldSpecs) {
-        /**
-         try {
-         this.validateFieldSpec(fieldSpecs);
-         } catch (final IllegalArgumentException e) {
-         throw new IllegalArgumentException("Board couldnt be initialized", e);
-         }
-         **/
         this.fields = fieldSpecs.map((fieldSpec, length) -> new Field(length, fieldSpec), length -> new Field[length][length]);
         this.compartments = this.detectCompartments();
     }
@@ -32,7 +25,6 @@ public class Board {
     }
 
     public void nextStep() {
-
         if (this.currentStep == null) {
             this.currentStep = SolverAlgorithms.getFirst();
             this.currentStepSolved = this.currentStep.solve(this);
@@ -59,12 +51,12 @@ public class Board {
     }
 
     public List<Compartment> detectRowCompartments() {
-        final List<FieldIndex> fieldIndexList = new ArrayList<>();
+        final List<ValueAtIndex<Field>> fieldIndexList = new ArrayList<>();
         final List<Compartment> compartments = new ArrayList<>();
 
         this.fields.forEachRow((fieldValueAtIndex, endOfRow) -> {
             if (fieldValueAtIndex.value.isWhite()) {
-                fieldIndexList.add(new FieldIndex(fieldValueAtIndex));
+                fieldIndexList.add(fieldValueAtIndex);
             }
             if (fieldValueAtIndex.value.isBlack() || endOfRow) {
                 if (!fieldIndexList.isEmpty()) {
@@ -77,12 +69,12 @@ public class Board {
     }
 
     public List<Compartment> detectColumnCompartments() {
-        final List<FieldIndex> fieldIndexList = new ArrayList<>();
+        final List<ValueAtIndex<Field>> fieldIndexList = new ArrayList<>();
         final List<Compartment> compartments = new ArrayList<>();
 
         this.fields.forEachColumn((fieldValueAtIndex, endOfColumn) -> {
             if (fieldValueAtIndex.value.isWhite()) {
-                fieldIndexList.add(new FieldIndex(fieldValueAtIndex));
+                fieldIndexList.add(fieldValueAtIndex);
             }
             if (fieldValueAtIndex.value.isBlack() || endOfColumn) {
                 compartments.add(new Compartment(fieldIndexList));

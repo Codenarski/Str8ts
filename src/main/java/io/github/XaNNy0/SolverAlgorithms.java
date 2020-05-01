@@ -1,14 +1,16 @@
 package io.github.XaNNy0;
 
-import io.github.XaNNy0.solvers.CheckForSolvedSquares;
+import io.github.XaNNy0.solvers.CompartmentCheckAlgorithm;
+import io.github.XaNNy0.solvers.SolvedSquaresAlgorithm;
+import io.github.XaNNy0.solvers.StrandedDigitsAlgorithm;
 
 import java.util.Arrays;
 
 public enum SolverAlgorithms implements SolverAlgorithm {
-    CheckForSolvedSquares(new CheckForSolvedSquares(), "Check for Solved Squares"),
+    CheckForSolvedSquares(new SolvedSquaresAlgorithm(), "Check for Solved Squares"),
     //ShowPossibles("ShowPossibles"),
-    CompartmentCheck("CompartmentCheck"),
-    StrandedDigitA("StrandedDigitA"),
+    CompartmentCheck(new CompartmentCheckAlgorithm(), "Compartment Check"),
+    StrandedDigitA(new StrandedDigitsAlgorithm(), "StrandedDigitA"),
     StrandedSequenceA("StrandedSequenceA"),
     CompartmentHighLowA("CompartmentHigh/LowA"),
     HighLowStr8tsRowsA("High/LowStr8ts(rows)A"),
@@ -33,7 +35,6 @@ public enum SolverAlgorithms implements SolverAlgorithm {
     }
 
     SolverAlgorithms(final SolverAlgorithm solverAlgorithm, final String description) {
-
         this.solverAlgorithm = solverAlgorithm;
         this.description = description;
     }
@@ -48,15 +49,14 @@ public enum SolverAlgorithms implements SolverAlgorithm {
         for (final SolverAlgorithms value : values()) {
             if (breakPoint) {
                 return value;
-            }
-
-            if (value == current) {
-                breakPoint = true;
+            } else {
+                if (value == current) {
+                    breakPoint = true;
+                }
             }
         }
         throw new IllegalStateException("Next algorithm could not be found");
     }
-
 
     @Override
     public boolean solve(final Board board) {
