@@ -3,6 +3,7 @@ package io.github.XaNNy0;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Board {
     private final SquareArray<Field> fields;
@@ -77,8 +78,10 @@ public class Board {
                 fieldIndexList.add(fieldValueAtIndex);
             }
             if (fieldValueAtIndex.value.isBlack() || endOfColumn) {
-                compartments.add(new Compartment(fieldIndexList));
-                fieldIndexList.clear();
+                if (!fieldIndexList.isEmpty()) {
+                    compartments.add(new Compartment(fieldIndexList));
+                    fieldIndexList.clear();
+                }
             }
         });
         return compartments;
@@ -86,5 +89,16 @@ public class Board {
 
     public List<Compartment> getCompartments() {
         return this.compartments;
+    }
+
+    public boolean isSolved() {
+        final AtomicBoolean solved = new AtomicBoolean(true);
+
+        this.fields.forEach(fieldValueAtIndex -> {
+            if (!fieldValueAtIndex.value.hasValue() && fieldValueAtIndex.value.isWhite()) {
+                solved.set(false);
+            }
+        });
+        return solved.get();
     }
 }

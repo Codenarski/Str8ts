@@ -5,7 +5,7 @@ import io.github.XaNNy0.SolverAlgorithm;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class StrandedDigitsAlgorithm implements SolverAlgorithm {
+public class IsolatedDigitsAlgorithm implements SolverAlgorithm {
 
     @Override
     public boolean solve(final Board board) {

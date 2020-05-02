@@ -1,8 +1,8 @@
 package io.github.XaNNy0;
 
 import io.github.XaNNy0.solvers.CompartmentCheckAlgorithm;
+import io.github.XaNNy0.solvers.IsolatedDigitsAlgorithm;
 import io.github.XaNNy0.solvers.SolvedSquaresAlgorithm;
-import io.github.XaNNy0.solvers.StrandedDigitsAlgorithm;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ public enum SolverAlgorithms implements SolverAlgorithm {
     CheckForSolvedSquares(new SolvedSquaresAlgorithm(), "Check for Solved Squares"),
     //ShowPossibles("ShowPossibles"),
     CompartmentCheck(new CompartmentCheckAlgorithm(), "Compartment Check"),
-    StrandedDigitA(new StrandedDigitsAlgorithm(), "StrandedDigitA"),
+    StrandedDigitA(new IsolatedDigitsAlgorithm(), "StrandedDigitA"),
     StrandedSequenceA("StrandedSequenceA"),
     CompartmentHighLowA("CompartmentHigh/LowA"),
     HighLowStr8tsRowsA("High/LowStr8ts(rows)A"),

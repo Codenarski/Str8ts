@@ -37,9 +37,37 @@ public class FieldSpecJsonTest {
 
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
+        int counter = 0;
         while (true) {
             board.nextStep();
+            counter++;
         }
+    }
+
+    @Test
+    void testModerate1Str8ts() {
+        final Type type = new TypeToken<String[][]>() {
+        }.getType();
+        final String[][] fields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"B\", \"W\", \"W\", \"W\", \"7W\", \"B\", \"B\", \"W\", \"1W\"],\n" +
+                "[\"5B\", \"W\", \"W\", \"7W\", \"W\", \"B\", \"W\", \"W\", \"W\"],\n" +
+                "[\"W\", \"3W\", \"1B\", \"W\", \"W\", \"W\", \"W\", \"W\", \"B\"],\n" +
+                "[\"4W\", \"2W\", \"W\", \"B\", \"8B\", \"W\", \"W\", \"W\", \"B\"],\n" +
+                "[\"W\", \"W\", \"W\", \"W\", \"B\", \"W\", \"5W\", \"W\", \"W\"],\n" +
+                "[\"B\", \"4W\", \"W\", \"W\", \"B\", \"B\", \"W\", \"W\", \"6W\"],\n" +
+                "[\"B\", \"7W\", \"W\", \"W\", \"W\", \"W\", \"B\", \"W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"9B\", \"W\", \"W\", \"W\", \"3W\", \"B\"],\n" +
+                "[\"W\", \"9W\", \"7B\", \"B\", \"1W\", \"W\", \"W\", \"W\", \"B\"],\n" +
+                "]", type));
+
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final Board board = new Board(fieldSpecs);
+        int counter = 0;
+        while (!board.isSolved()) {
+            board.nextStep();
+            counter++;
+        }
+        System.out.println(counter);
     }
 
     public String[][] filterNulls(final String[][] old) {
