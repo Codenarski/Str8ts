@@ -101,4 +101,15 @@ public class Board {
         });
         return solved.get();
     }
+
+    public boolean equals(final Board board) {
+        for (int x = 0; x < this.fields.getArray().length; x++) {
+            for (int y = 0; y < this.fields.getArray().length; y++) {
+                if (this.fields.getArray()[x][y].getValue() != board.getFields().getArray()[x][y].getValue()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

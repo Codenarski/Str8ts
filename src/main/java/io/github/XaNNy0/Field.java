@@ -45,11 +45,14 @@ public class Field {
     }
 
     public boolean removeCandidates(final List<Integer> values) {
-        final boolean changes = this.candidates.removeAll(values);
-        if (this.candidates.size() == 1) {
-            this.value = this.candidates.iterator().next();
+        if (this.isWhite() && !this.hasValue()) {
+            final boolean changes = this.candidates.removeAll(values);
+            if (this.candidates.size() == 1) {
+                this.value = this.candidates.iterator().next();
+            }
+            return changes;
         }
-        return changes;
+        return false;
     }
 
     public boolean removeCandidate(final int value) {

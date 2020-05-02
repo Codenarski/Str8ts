@@ -2,6 +2,7 @@ package io.github.XaNNy0;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
@@ -21,6 +22,7 @@ public class FieldSpecJsonTest {
 
     @Test
     void testEasy1Str8ts() {
+        //This Board only needs SolvedSquares and CompartmentCheck to be solved
         final Type type = new TypeToken<String[][]>() {
         }.getType();
         final String[][] fields = this.filterNulls(this.gson.fromJson("[" +
@@ -37,11 +39,27 @@ public class FieldSpecJsonTest {
 
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
-        int counter = 0;
-        while (true) {
+        while (!board.isSolved()) {
             board.nextStep();
-            counter++;
         }
+
+        final String[][] solutionFields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"6B\", \"4W\", \"3W\", \"B\", \"B\", \"8W\", \"7W\", \"B\", \"B\"],\n" +
+                "[\"4W\", \"1W\", \"2W\", \"3W\", \"B\", \"7W\", \"8W\", \"9W\", \"6W\"],\n" +
+                "[\"3W\", \"2W\", \"B\", \"4W\", \"5W\", \"B\", \"6W\", \"8W\", \"7W\"],\n" +
+                "[\"5W\", \"3W\", \"4W\", \"2B\", \"8W\", \"6W\", \"9W\", \"7W\", \"B\"],\n" +
+                "[\"B\", \"9B\", \"7W\", \"8W\", \"6W\", \"5W\", \"4W\", \"B\", \"B\"],\n" +
+                "[\"B\", \"8W\", \"6W\", \"9W\", \"7W\", \"B\", \"5W\", \"4W\", \"3W\"],\n" +
+                "[\"9W\", \"7W\", \"8W\", \"B\", \"4W\", \"3W\", \"B\", \"6W\", \"5W\"],\n" +
+                "[\"8W\", \"6W\", \"9W\", \"7W\", \"1B\", \"2W\", \"3W\", \"5W\", \"4W\"],\n" +
+                "[\"B\", \"B\", \"5W\", \"6W\", \"B\", \"4B\", \"2W\", \"3W\", \"B\"],\n" +
+                "]", type));
+
+
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final Board solutionBoard = new Board(solutionFieldSpecs);
+
+        Assert.assertTrue(board.equals(solutionBoard));
     }
 
     @Test
@@ -60,14 +78,13 @@ public class FieldSpecJsonTest {
                 "[\"W\", \"9W\", \"7B\", \"B\", \"1W\", \"W\", \"W\", \"W\", \"B\"],\n" +
                 "]", type));
 
+
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
-        int counter = 0;
+
         while (!board.isSolved()) {
             board.nextStep();
-            counter++;
         }
-        System.out.println(counter);
     }
 
     public String[][] filterNulls(final String[][] old) {

@@ -37,6 +37,7 @@ public class Compartment {
         return changed;
     }
 
+    //TODO: Fehler, aktuell wird die Isloation falsch ermittelt
     public boolean removeIsolatedCandidates() {
         boolean changed = false;
         for (final ValueAtIndex<Field> field : this.fields) {
