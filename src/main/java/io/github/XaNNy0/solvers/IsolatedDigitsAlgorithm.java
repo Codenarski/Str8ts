@@ -12,7 +12,7 @@ public class IsolatedDigitsAlgorithm implements SolverAlgorithm {
         final AtomicBoolean changed = new AtomicBoolean();
 
         board.getCompartments().forEach(compartment -> {
-            if (compartment.removeIsolatedCandidates()) {
+            if (compartment.removeIsolatedCandidatesCrap()) {
                 changed.set(true);
             }
         });

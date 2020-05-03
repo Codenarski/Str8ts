@@ -91,7 +91,7 @@ public class Board {
         return this.compartments;
     }
 
-    public boolean isSolved() {
+    public boolean isNotSolved() {
         final AtomicBoolean solved = new AtomicBoolean(true);
 
         this.fields.forEach(fieldValueAtIndex -> {
@@ -99,7 +99,7 @@ public class Board {
                 solved.set(false);
             }
         });
-        return solved.get();
+        return !solved.get();
     }
 
     public boolean equals(final Board board) {

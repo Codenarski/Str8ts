@@ -12,7 +12,6 @@ public class Field {
     private final Set<Integer> candidates;
     private final int size;
     private int value;
-
     public Field(final int size, final FieldSpec fieldSpec) {
         this.editable = !fieldSpec.isBlack();
         this.value = fieldSpec.getValue();
@@ -22,6 +21,10 @@ public class Field {
         } else {
             this.candidates = new HashSet<>(this.value);
         }
+    }
+
+    public int getSize() {
+        return this.size;
     }
 
     public boolean isBlack() {

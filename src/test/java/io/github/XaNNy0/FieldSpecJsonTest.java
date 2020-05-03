@@ -39,7 +39,7 @@ public class FieldSpecJsonTest {
 
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
-        while (!board.isSolved()) {
+        while (board.isNotSolved()) {
             board.nextStep();
         }
 
@@ -82,9 +82,28 @@ public class FieldSpecJsonTest {
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
-        while (!board.isSolved()) {
+        while (board.isNotSolved()) {
             board.nextStep();
         }
+
+        final String[][] solutionFields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"B\", \"5W\", \"8W\", \"6W\", \"7W\", \"B\", \"B\", \"2W\", \"1W\"],\n" +
+                "[\"5B\", \"8W\", \"9W\", \"7W\", \"6W\", \"B\", \"3W\", \"1W\", \"2W\"],\n" +
+                "[\"2W\", \"3W\", \"1B\", \"8W\", \"5W\", \"6W\", \"4W\", \"7W\", \"B\"],\n" +
+                "[\"4W\", \"2W\", \"3W\", \"B\", \"8B\", \"7W\", \"6W\", \"5W\", \"B\"],\n" +
+                "[\"3W\", \"1W\", \"4W\", \"2W\", \"B\", \"8W\", \"5W\", \"6W\", \"7W\"],\n" +
+                "[\"B\", \"4W\", \"2W\", \"3W\", \"B\", \"B\", \"7W\", \"8W\", \"6W\"],\n" +
+                "[\"B\", \"7W\", \"6W\", \"4W\", \"3W\", \"5W\", \"B\", \"9W\", \"8W\"],\n" +
+                "[\"7W\", \"6W\", \"5W\", \"9B\", \"2W\", \"4W\", \"1W\", \"3W\", \"B\"],\n" +
+                "[\"8W\", \"9W\", \"7B\", \"B\", \"1W\", \"3W\", \"2W\", \"4W\", \"B\"],\n" +
+                "]", type));
+
+
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final Board solutionBoard = new Board(solutionFieldSpecs);
+
+        Assert.assertTrue(board.equals(solutionBoard));
+
     }
 
     public String[][] filterNulls(final String[][] old) {
