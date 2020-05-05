@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 public class Compartment {
 
+    //TODO: eventuell die strait für ein compartment aus dem solver speichern ??
     private final List<ValueAtIndex<Field>> fields;
 
     public Compartment(final List<ValueAtIndex<Field>> fields) {
