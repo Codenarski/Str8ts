@@ -1,9 +1,6 @@
 package io.github.XaNNy0;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -12,6 +9,7 @@ public class Field {
     private final Set<Integer> candidates;
     private final int size;
     private int value;
+
     public Field(final int size, final FieldSpec fieldSpec) {
         this.editable = !fieldSpec.isBlack();
         this.value = fieldSpec.getValue();
@@ -47,7 +45,7 @@ public class Field {
         return this.getValue() != 0;
     }
 
-    public boolean removeCandidates(final List<Integer> values) {
+    public boolean removeCandidates(final Collection<Integer> values) {
         if (this.isWhite() && !this.hasValue()) {
             final boolean changes = this.candidates.removeAll(values);
             if (this.candidates.size() == 1) {
@@ -62,7 +60,7 @@ public class Field {
         return this.removeCandidates(new ArrayList<>(value));
     }
 
-    public boolean retainCandidates(final List<Integer> values) {
+    public boolean retainCandidates(final Collection<Integer> values) {
         final List<Integer> candidatesToRemove = IntStream.rangeClosed(1, this.size).boxed().collect(Collectors.toList());
         candidatesToRemove.removeAll(values);
         return this.removeCandidates(candidatesToRemove);

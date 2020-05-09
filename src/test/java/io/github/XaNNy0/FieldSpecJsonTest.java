@@ -196,10 +196,20 @@ public class FieldSpecJsonTest {
 
     @Test
     void testTough1Str8ts() {
-        //This Board only needs SolvedSquares, CompartmentCheck and IsolatedDigits
+        //This Board needs almost all strategies
         final Type type = new TypeToken<String[][]>() {
         }.getType();
-        final String[][] fields = this.filterNulls(this.gson.fromJson("", type));
+        final String[][] fields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"B\", \"B\", \"W\", \"6W\", \"B\", \"W\", \"W\", \"B\", \"3B\"], \n" +
+                "[\"B\", \"W\", \"W\", \"2W\", \"B\", \"W\", \"W\", \"W\", \"B\"], \n" +
+                "[\"2W\", \"W\", \"B\", \"W\", \"3W\", \"W\", \"B\", \"W\", \"W\"], \n" +
+                "[\"W\", \"W\", \"W\", \"5W\", \"W\", \"W\", \"W\", \"7W\", \"W\"], \n" +
+                "[\"B\", \"B\", \"W\", \"W\", \"W\", \"1W\", \"W\", \"6B\", \"B\"], \n" +
+                "[\"W\", \"7W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\"], \n" +
+                "[\"W\", \"6W\", \"B\", \"W\", \"W\", \"W\", \"9B\", \"W\", \"W\"], \n" +
+                "[\"5B\", \"W\", \"W\", \"W\", \"1B\", \"W\", \"W\", \"W\", \"B\"], \n" +
+                "[\"B\", \"B\", \"W\", \"W\", \"7B\", \"W\", \"W\", \"B\", \"B\"], \n" +
+                "]", type));
 
 
         final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
@@ -209,14 +219,23 @@ public class FieldSpecJsonTest {
             board.nextStep();
         }
 
-        final String[][] solutionFields = this.filterNulls(this.gson.fromJson("", type));
+        final String[][] solutionFields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"B\", \"B\", \"5W\", \"6W\", \"B\", \"7W\", \"8W\", \"B\", \"3B\"],\n" +
+                "[\"B\", \"3W\", \"4W\", \"2W\", \"B\", \"6W\", \"7W\", \"8W\", \"B\"],\n" +
+                "[\"2W\", \"1W\", \"B\", \"4W\", \"3W\", \"5W\", \"B\", \"9W\", \"8W\"],\n" +
+                "[\"1W\", \"2W\", \"3W\", \"5W\", \"6W\", \"8W\", \"4W\", \"7W\", \"9W\"],\n" +
+                "[\"B\", \"B\", \"2W\", \"3W\", \"4W\", \"1W\", \"5W\", \"6B\", \"B\"],\n" +
+                "[\"6W\", \"7W\", \"1W\", \"8W\", \"5W\", \"9W\", \"3W\", \"2W\", \"4W\"],\n" +
+                "[\"7W\", \"6W\", \"B\", \"1W\", \"2W\", \"3W\", \"9B\", \"4W\", \"5W\"],\n" +
+                "[\"5B\", \"8W\", \"9W\", \"7W\", \"1B\", \"4W\", \"2W\", \"3W\", \"B\"],\n" +
+                "[\"B\", \"B\", \"8W\", \"9W\", \"7B\", \"2W\", \"1W\", \"B\", \"B\"],\n" +
+                "]", type));
 
 
         final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
-
     }
 
     public String[][] filterNulls(final String[][] old) {

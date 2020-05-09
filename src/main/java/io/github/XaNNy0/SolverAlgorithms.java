@@ -2,6 +2,7 @@ package io.github.XaNNy0;
 
 import io.github.XaNNy0.solvers.CompartmentCheckAlgorithm;
 import io.github.XaNNy0.solvers.IsolatedDigitsAlgorithm;
+import io.github.XaNNy0.solvers.RequiredDigitsAlgorithm;
 import io.github.XaNNy0.solvers.SolvedSquaresAlgorithm;
 
 import java.util.Arrays;
@@ -11,17 +12,28 @@ public enum SolverAlgorithms implements SolverAlgorithm {
     //ShowPossibles("ShowPossibles"),
     CompartmentCheck(new CompartmentCheckAlgorithm(), "Compartment Check"),
     StrandedDigitA(new IsolatedDigitsAlgorithm(), "StrandedDigitA"),
+    //All included in StrandedDigit
+    /*
     StrandedSequenceA("StrandedSequenceA"),
     CompartmentHighLowA("CompartmentHigh/LowA"),
+    */
+    //All included in RequiredDigits
+    /*
     HighLowStr8tsRowsA("High/LowStr8ts(rows)A"),
     HighLowStr8tsColsA("High/LowStr8ts(cols)A"),
-    IsolatedDigit("IsolatedDigit"),
-    RequiredDigits("RequiredDigits"),
+    */
+
+    //IsolatedDigit("IsolatedDigit"),
+    RequiredDigits(new RequiredDigitsAlgorithm(), "RequiredDigits"),
+
+    //Probably not splitting between A & B strategies
+    /*
     StrandedDigitB("StrandedDigitB"),
     StrandedSequenceB("StrandedSequenceB"),
     CompartmentHighLowB("CompartmentHigh/LowB"),
     HighLowStr8tsRowsB("High/LowStr8ts(rows)B"),
     HighLowStr8tsColsB("High/LowStr8ts(cols)B"),
+     */
     NakedPairs("NakedPairs"),
     NakedTriples("NakedTriples"),
     ;

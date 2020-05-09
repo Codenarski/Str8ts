@@ -1,7 +1,7 @@
 package io.github.XaNNy0;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,11 +9,20 @@ import java.util.stream.IntStream;
 
 public class Compartment {
 
-    //TODO: eventuell die strait für ein compartment aus dem solver speichern ??
     private final List<ValueAtIndex<Field>> fields;
+    private final String key;
 
     public Compartment(final List<ValueAtIndex<Field>> fields) {
         this.fields = new ArrayList<>(fields);
+
+        final List<Integer> rowIds = fields.stream().map(field -> field.row).distinct().collect(Collectors.toList());
+        final List<Integer> columnIds = fields.stream().map(field -> field.column).distinct().collect(Collectors.toList());
+
+        this.key = rowIds.size() == 1 ? "R" + rowIds.iterator().next() : "C" + columnIds.iterator().next();
+    }
+
+    public String getKey() {
+        return this.key;
     }
 
     public List<ValueAtIndex<Field>> getFields() {
@@ -31,7 +40,7 @@ public class Compartment {
                 .collect(Collectors.toList()); //
     }
 
-    public boolean retainCandidates(final List<Integer> candidatesToRetain) {
+    public boolean retainCandidates(final Collection<Integer> candidatesToRetain) {
         boolean changed = false;
         for (final ValueAtIndex<Field> field : this.fields) {
             if (field.value.retainCandidates(candidatesToRetain)) {
@@ -41,61 +50,75 @@ public class Compartment {
         return changed;
     }
 
-    public boolean removeIsolatedCandidatesCrap() {
+    public boolean removeCandidates(final Collection<Integer> candidatesToRemove) {
         boolean changed = false;
-        final int boardSize = this.fields.get(0).value.getSize();
-        final List<Integer> values;
-        final List<List<Integer>> straits;
-        final List<List<Integer>> straitsToRemove = new ArrayList<>();
-        final Set<Integer> currentCandidates = new HashSet<>();
-        final Set<Integer> remainingCandidates = new HashSet<>();
-
-        values = this.fields.stream().
-                filter(field -> field.value.hasValue()).
-                map(field -> field.value.getValue()).
-                collect(Collectors.toList());
-
-        straits = IntStream.iterate(1, i -> (i + this.fields.size() - 1) <= boardSize, i -> i + 1)
-                .mapToObj(i -> IntStream.rangeClosed(i, i + this.fields.size() - 1)
-                        .boxed()
-                        .collect(Collectors.toList()))
-                .collect(Collectors.toList());
-
-        straits.forEach(strait -> {
-            values.stream()
-                    .filter(value -> !strait.contains(value))
-                    .map(value -> strait)
-                    .forEach(straitsToRemove::add);
-        });
-
-        straits.removeAll(straitsToRemove);
-        straitsToRemove.clear();
-
-        this.fields.stream().map(field -> field.value.getCandidates())
-                .forEach(currentCandidates::addAll);
-
-        currentCandidates.addAll(values);
-
-        for (final List<Integer> strait : straits) {
-            if (!currentCandidates.containsAll(strait)) {
-                straitsToRemove.add(strait);
-            }
-        }
-
-        straits.removeAll(straitsToRemove);
-        straitsToRemove.clear();
-
-        for (final List<Integer> strait : straits) {
-            remainingCandidates.addAll(strait);
-        }
-
         for (final ValueAtIndex<Field> field : this.fields) {
-            if (field.value.retainCandidates(new ArrayList<>(remainingCandidates))) {
+            if (field.value.removeCandidates(candidatesToRemove)) {
                 changed = true;
             }
         }
         return changed;
     }
 
-    //TODO: eigenes foreach schreiben, so die gelösten compartments übersprungen werden
+    public boolean removeIsolatedCandidates() {
+        boolean changed = false;
+
+        final List<List<Integer>> clearedStraits = this.getClearedStraits();
+        final Set<Integer> remainingCandidates = this.getRemainingCandidates(clearedStraits);
+
+        for (final ValueAtIndex<Field> field : this.fields) {
+            if (field.value.retainCandidates(remainingCandidates)) {
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    private Set<Integer> getRemainingCandidates(final List<List<Integer>> clearedStraits) {
+        return clearedStraits.stream().flatMap(Collection::stream).collect(Collectors.toSet());
+    }
+
+    private List<List<Integer>> getClearedStraits() {
+
+        final List<List<Integer>> possibleStraits = this.getPossibleStraits();
+
+        final Set<Integer> values = this.fields.stream().
+                filter(field -> field.value.hasValue()).
+                map(field -> field.value.getValue()).
+                collect(Collectors.toSet());
+
+        final Set<Integer> currentCandidates = this.fields.stream().map(v -> v.value.getCandidates()).flatMap(Collection::stream).collect(Collectors.toSet());
+        currentCandidates.addAll(values);
+
+        return possibleStraits.stream().filter(currentCandidates::containsAll).collect(Collectors.toList());
+    }
+
+    public List<List<Integer>> getPossibleStraits() {
+        final Set<Integer> values = this.fields.stream().
+                filter(field -> field.value.hasValue()).
+                map(field -> field.value.getValue()).
+                collect(Collectors.toSet());
+
+        final int boardSize = this.fields.get(0).value.getSize();
+
+        return IntStream.iterate(1, i -> (i + this.fields.size() - 1) <= boardSize, i -> i + 1)
+                .mapToObj(i -> IntStream.rangeClosed(i, i + this.fields.size() - 1)
+                        .boxed()
+                        .collect(Collectors.toList()))
+                .filter(j -> j.containsAll(values))
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> getRequiredDigits() {
+        final List<Integer> requiredDigits = new ArrayList<>();
+        final List<List<Integer>> possibleStraits = this.getPossibleStraits();
+        for (final List<Integer> possibleStrait : possibleStraits) {
+            if (requiredDigits.isEmpty()) {
+                requiredDigits.addAll(possibleStrait);
+            } else {
+                requiredDigits.retainAll(possibleStrait);
+            }
+        }
+        return requiredDigits;
+    }
 }

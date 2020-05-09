@@ -1,28 +1,17 @@
 package io.github.XaNNy0;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Board {
     private final SquareArray<Field> fields;
-    private final List<Compartment> compartments;
+    private final Compartments compartments;
     private SolverAlgorithms currentStep = null;
     private boolean currentStepSolved = false;
 
     public Board(final SquareArray<FieldSpec> fieldSpecs) {
         this.fields = fieldSpecs.map((fieldSpec, length) -> new Field(length, fieldSpec), length -> new Field[length][length]);
-        this.compartments = this.detectCompartments();
-    }
-
-    private void validateFieldSpec(final FieldSpec[][] fieldSpecs) {
-        if (fieldSpecs == null) {
-            throw new IllegalArgumentException("Fieldspec is null");
-        }
-        if (fieldSpecs.length != fieldSpecs[0].length) {
-            throw new IllegalArgumentException("Fieldspecs are not a square");
-        }
+        this.compartments = new Compartments(this.fields);
     }
 
     public void nextStep() {
@@ -44,50 +33,7 @@ public class Board {
         return this.fields;
     }
 
-    private List<Compartment> detectCompartments() {
-        final List<Compartment> compartments = new ArrayList<>();
-        compartments.addAll(this.detectRowCompartments());
-        compartments.addAll(this.detectColumnCompartments());
-        return compartments;
-    }
-
-    public List<Compartment> detectRowCompartments() {
-        final List<ValueAtIndex<Field>> fieldIndexList = new ArrayList<>();
-        final List<Compartment> compartments = new ArrayList<>();
-
-        this.fields.forEachRow((fieldValueAtIndex, endOfRow) -> {
-            if (fieldValueAtIndex.value.isWhite()) {
-                fieldIndexList.add(fieldValueAtIndex);
-            }
-            if (fieldValueAtIndex.value.isBlack() || endOfRow) {
-                if (!fieldIndexList.isEmpty()) {
-                    compartments.add(new Compartment(fieldIndexList));
-                    fieldIndexList.clear();
-                }
-            }
-        });
-        return compartments;
-    }
-
-    public List<Compartment> detectColumnCompartments() {
-        final List<ValueAtIndex<Field>> fieldIndexList = new ArrayList<>();
-        final List<Compartment> compartments = new ArrayList<>();
-
-        this.fields.forEachColumn((fieldValueAtIndex, endOfColumn) -> {
-            if (fieldValueAtIndex.value.isWhite()) {
-                fieldIndexList.add(fieldValueAtIndex);
-            }
-            if (fieldValueAtIndex.value.isBlack() || endOfColumn) {
-                if (!fieldIndexList.isEmpty()) {
-                    compartments.add(new Compartment(fieldIndexList));
-                    fieldIndexList.clear();
-                }
-            }
-        });
-        return compartments;
-    }
-
-    public List<Compartment> getCompartments() {
+    public Compartments getCompartments() {
         return this.compartments;
     }
 
