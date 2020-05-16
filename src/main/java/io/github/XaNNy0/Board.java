@@ -73,7 +73,7 @@ public class Board {
     public boolean checkDistinctValues() {
         return Stream.concat(this.fields.streamRows(), this.fields.streamColumns()).allMatch(rowOrColumn -> {
             final long amountOfValueFields = rowOrColumn.stream()
-                    .filter(this::isValueField)
+                    .filter(field -> field.value.isValueField())
                     .count();
             final long amountOfDistinctValues = rowOrColumn.stream()
                     .filter(field -> field.value.hasValue())
@@ -82,11 +82,6 @@ public class Board {
                     .count();
             return amountOfValueFields == amountOfDistinctValues;
         });
-    }
-
-    //TODO: sollte eig ins Feld
-    private boolean isValueField(final ValueAtIndex<Field> field) {
-        return field.value.isWhite() || (field.value.isBlack() && field.value.hasValue());
     }
 
     public boolean isNotSolved() {

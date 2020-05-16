@@ -1,49 +1,20 @@
 package io.github.XaNNy0;
 
 import io.github.XaNNy0.solvers.*;
-import io.github.XaNNy0.solvers.nakedx.NakedX;
 
 import java.util.Arrays;
 
 public enum SolverAlgorithms implements SolverAlgorithm {
     CheckForSolvedSquares(new SolvedSquaresAlgorithm(), "Check for Solved Squares"),
-    //ShowPossibles("ShowPossibles"),
     CompartmentCheck(new CompartmentCheckAlgorithm(), "Compartment Check"),
     StrandedDigitA(new StrandedDigitAlgorithm(), "StrandedDigit"),
-    //All included in StrandedDigit
-    /*
-    StrandedSequenceA("StrandedSequenceA"),
-    CompartmentHighLowA("CompartmentHigh/LowA"),
-    */
-    //All included in RequiredDigits
-    /*
-    HighLowStr8tsRowsA("High/LowStr8ts(rows)A"),
-    HighLowStr8tsColsA("High/LowStr8ts(cols)A"),
-    */
-
     IsolatedDigit(new IsolatedDigitAlgorithm(), "IsolatedDigit"),
     RequiredDigits(new RequiredDigitsAlgorithm(), "RequiredDigits"),
-
-    //Probably not splitting between A & B strategies
-    /*
-    StrandedDigitB("StrandedDigitB"),
-    StrandedSequenceB("StrandedSequenceB"),
-    CompartmentHighLowB("CompartmentHigh/LowB"),
-    HighLowStr8tsRowsB("High/LowStr8ts(rows)B"),
-    HighLowStr8tsColsB("High/LowStr8ts(cols)B"),
-     */
-    //NakedPairs(new NakedPairsAlgorithm(), "NakedPairs"),
-    NakedPairs(new NakedXAlgorithm(NakedX.NakedPair::new, 2), "NakedPairs"),
-    //NakedTriples(new NakedXAlgorithm(NakedTriple::new, 3), "NakedTriples"),
+    NakedPairs(new NakedPairsAlgorithm(), "NakedPairs"),
     Backtracking(new Backtracking(), "Backtracking");
 
     private final String description;
     private final SolverAlgorithm solverAlgorithm;
-
-    SolverAlgorithms(final String description) {
-        this.solverAlgorithm = null;
-        this.description = description;
-    }
 
     SolverAlgorithms(final SolverAlgorithm solverAlgorithm, final String description) {
         this.solverAlgorithm = solverAlgorithm;

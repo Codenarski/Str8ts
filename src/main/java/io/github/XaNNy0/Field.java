@@ -1,6 +1,9 @@
 package io.github.XaNNy0;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,6 +26,10 @@ public class Field {
 
     public int getSize() {
         return this.size;
+    }
+
+    public boolean isValueField() {
+        return this.isWhite() || (this.isBlack() && this.hasValue());
     }
 
     public boolean isBlack() {
@@ -58,10 +65,6 @@ public class Field {
             return changes;
         }
         return false;
-    }
-
-    public boolean removeCandidate(final int value) {
-        return this.removeCandidates(new ArrayList<>(value));
     }
 
     public boolean retainCandidates(final Collection<Integer> values) {

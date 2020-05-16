@@ -57,11 +57,19 @@ public class Compartments {
 
 
     public List<Compartment> detectRowCompartments(final SquareArray<Field> fields) {
-        return fields.streamRows().map(this::createCompartment).flatMap(Collection::stream).collect(Collectors.toList());
+        return fields.streamRows()
+                .map(this::createCompartment)
+                .flatMap(Collection::stream)
+                .filter(compartment -> compartment.size() > 1)
+                .collect(Collectors.toList());
     }
 
     public List<Compartment> detectColumnCompartments(final SquareArray<Field> fields) {
-        return fields.streamColumns().map(this::createCompartment).flatMap(Collection::stream).collect(Collectors.toList());
+        return fields.streamColumns()
+                .map(this::createCompartment)
+                .flatMap(Collection::stream)
+                .filter(compartment -> compartment.size() > 1)
+                .collect(Collectors.toList());
     }
 
     private List<Compartment> createCompartment(final List<ValueAtIndex<Field>> rowOrColumnFields) {
@@ -85,5 +93,4 @@ public class Compartments {
         }
         return compartments;
     }
-
 }

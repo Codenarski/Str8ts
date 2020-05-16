@@ -16,11 +16,6 @@ public class Backtracking implements SolverAlgorithm {
 
     @Override
     public boolean solve(final Board board) {
-        return this.backtracking(board);
-
-    }
-
-    private boolean backtracking(final Board board) {
         final Field[][] boardFields = board.getFields().getArray();
         for (int row = 0; row < board.getFields().getArray().length; row++) {
             for (int column = 0; column < board.getFields().getArray().length; column++) {
@@ -29,7 +24,7 @@ public class Backtracking implements SolverAlgorithm {
 
                         if (this.isOk(board)) {
                             boardFields[row][column].setValue(candidate);
-                            if (this.backtracking(board)) {
+                            if (this.solve(board)) {
                                 return true;
                             } else {
                                 boardFields[row][column].setValue(0);

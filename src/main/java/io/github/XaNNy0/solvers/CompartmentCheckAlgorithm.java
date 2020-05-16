@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CompartmentCheckAlgorithm implements SolverAlgorithm {
+
     @Override
     public boolean solve(final Board board) {
 

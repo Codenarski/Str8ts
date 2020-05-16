@@ -16,7 +16,6 @@ public class SolvedSquaresAlgorithm implements SolverAlgorithm {
     public boolean solve(final Board board) {
 
         final AtomicBoolean changed = new AtomicBoolean();
-
         final Map<Integer, List<Integer>> rowMap = new HashMap<>();
         final Map<Integer, List<Integer>> columnMap = new HashMap<>();
 

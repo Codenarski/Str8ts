@@ -18,9 +18,7 @@ public class IsolatedDigitAlgorithm implements SolverAlgorithm {
         final AtomicBoolean changed = new AtomicBoolean(false);
 
         final List<Map<ValueAtIndex<Field>, Set<Integer>>> candidatesToRemove = new ArrayList<>();
-        board.getCompartments().forEach(compartment -> {
-            candidatesToRemove.add(compartment.detectIsolatedCandidates());
-        });
+        board.getCompartments().forEach(compartment -> candidatesToRemove.add(compartment.detectIsolatedCandidates()));
 
         for (final Map<ValueAtIndex<Field>, Set<Integer>> valueAtIndexSetMap : candidatesToRemove) {
             valueAtIndexSetMap.forEach((v, k) -> {

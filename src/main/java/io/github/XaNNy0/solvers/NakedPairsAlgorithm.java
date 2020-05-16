@@ -39,6 +39,7 @@ public class NakedPairsAlgorithm implements SolverAlgorithm {
                 test.computeIfAbsent(field.value.getCandidates().toString(), ignore -> new AtomicInteger(0)).incrementAndGet();
             }
         });
+
         rowOrColumnFields.forEach(field -> test.forEach((k, v) -> {
             if (v.get() >= 2) {
                 if (!field.value.getCandidates().toString().equals(k) && !field.value.hasValue()) {

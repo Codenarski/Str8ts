@@ -6,6 +6,9 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class FieldSpecJsonTest {
 
@@ -427,24 +430,75 @@ public class FieldSpecJsonTest {
         Assert.assertTrue(board.isSolved());
     }
 
+    @Test
+    void testExtreme1Str8ts() {
+        //This Board can not be solved without Backtracking
+        final Type type = new TypeToken<String[][]>() {
+        }.getType();
+        final String[][] fields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"W\", \"W\", \"1B\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"9W\"],\n" +
+                "[\"3W\", \"W\", \"W\", \"W\", \"W\", \"4W\", \"B\", \"W\", \"W\"],\n" +
+                "[\"W\", \"1W\", \"W\", \"W\", \"W\", \"W\", \"7B\", \"W\", \"W\"],\n" +
+                "[\"6B\", \"W\", \"B\", \"5B\", \"W\", \"W\", \"B\", \"W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"B\", \"W\", \"W\", \"3W\", \"W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\"],\n" +
+                "[\"B\", \"8W\", \"W\", \"W\", \"B\", \"W\", \"W\", \"W\", \"2W\"],\n" +
+                "[\"B\", \"9B\", \"W\", \"W\", \"2B\", \"W\", \"W\", \"3W\", \"W\"],\n" +
+                "]", type));
+
+
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final Board board = new Board(fieldSpecs);
+
+
+        while (board.isNotSolved()) {
+            board.nextStep();
+        }
+
+        Assert.assertTrue(board.isSolved());
+    }
+
+    @Test
+    void testExtreme2Str8ts() {
+        //This Board can not be solved without Backtracking
+        final Type type = new TypeToken<String[][]>() {
+        }.getType();
+        final String[][] fields = this.filterNulls(this.gson.fromJson("[\n" +
+                "[\"W\", \"W\", \"4B\", \"W\", \"W\", \"W\", \"B\", \"7W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"1W\", \"W\", \"W\"],\n" +
+                "[\"6W\", \"W\", \"W\", \"B\", \"W\", \"W\", \"W\", \"B\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"3W\", \"W\", \"5W\", \"2W\", \"B\", \"B\"],\n" +
+                "[\"W\", \"1B\", \"9B\", \"W\", \"4W\", \"W\", \"W\", \"3W\", \"W\"],\n" +
+                "[\"B\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"W\", \"4W\", \"W\", \"W\", \"W\", \"6W\", \"W\"],\n" +
+                "[\"W\", \"W\", \"2W\", \"W\", \"W\", \"7W\", \"W\", \"W\", \"W\"],\n" +
+                "[\"3B\", \"B\", \"B\", \"W\", \"W\", \"W\", \"5W\", \"W\", \"W\"],\n" +
+                "]", type));
+
+
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final Board board = new Board(fieldSpecs);
+
+
+        while (board.isNotSolved()) {
+            board.nextStep();
+        }
+
+        Assert.assertTrue(board.isSolved());
+    }
+
     public String[][] filterNulls(final String[][] old) {
-        int count = 0;
-        for (int i = 0; i < old.length; i++) {
-            if (old[i] != null) {
-                count++;
-            }
-        }
+        final int count = (int) Arrays.stream(old)
+                .filter(Objects::nonNull)
+                .count();
 
-        final String[][] notOld = new String[count][count];
+        final String[][] cleaned = new String[count][count];
 
-        for (int i = 0; i < notOld.length; i++) {
-            if (old[i] == null) {
-                continue;
-            }
-            for (int j = 0; j < notOld.length; j++) {
-                notOld[i][j] = old[i][j];
-            }
-        }
-        return notOld;
+        IntStream.range(0, cleaned.length)
+                .filter(i -> old[i] != null)
+                .forEach(i -> System.arraycopy(old[i], 0, cleaned[i], 0, cleaned.length));
+
+        return cleaned;
     }
 }

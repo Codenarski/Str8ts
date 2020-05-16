@@ -7,7 +7,6 @@ import java.util.List;
 
 public class ComputePossibleUpperRange {
 
-
     private final int boardSize;
 
     public ComputePossibleUpperRange(final int boardSize) {
