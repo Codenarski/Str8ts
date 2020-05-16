@@ -57,7 +57,7 @@ public class CompartmentTest {
         final List<Integer> requiredDigitsC0 = compartmentList.get(0).getRequiredDigits();
         final List<Integer> requiredDigitsC1 = compartmentList.get(1).getRequiredDigits();
 
-        //Liste bauen und vergleichen
+        //TODO:Liste bauen und vergleichen
     }
 
 

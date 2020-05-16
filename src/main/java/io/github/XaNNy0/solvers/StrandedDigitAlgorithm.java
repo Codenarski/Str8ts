@@ -5,14 +5,14 @@ import io.github.XaNNy0.SolverAlgorithm;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IsolatedDigitsAlgorithm implements SolverAlgorithm {
+public class StrandedDigitAlgorithm implements SolverAlgorithm {
 
     @Override
     public boolean solve(final Board board) {
         final AtomicBoolean changed = new AtomicBoolean();
 
         board.getCompartments().forEach(compartment -> {
-            if (compartment.removeIsolatedCandidates()) {
+            if (compartment.removeStrandedCandidates()) {
                 changed.set(true);
             }
         });

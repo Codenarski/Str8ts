@@ -1,9 +1,7 @@
 package io.github.XaNNy0;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,10 +9,11 @@ public class Compartment {
 
     private final List<ValueAtIndex<Field>> fields;
     private final String key;
+    private final int boardSize;
 
-    public Compartment(final List<ValueAtIndex<Field>> fields) {
+    public Compartment(final List<ValueAtIndex<Field>> fields, final int boardSize) {
         this.fields = new ArrayList<>(fields);
-
+        this.boardSize = boardSize;
         final List<Integer> rowIds = fields.stream().map(field -> field.row).distinct().collect(Collectors.toList());
         final List<Integer> columnIds = fields.stream().map(field -> field.column).distinct().collect(Collectors.toList());
 
@@ -23,10 +22,6 @@ public class Compartment {
 
     public String getKey() {
         return this.key;
-    }
-
-    public List<ValueAtIndex<Field>> getFields() {
-        return this.fields;
     }
 
     public int size() {
@@ -60,7 +55,7 @@ public class Compartment {
         return changed;
     }
 
-    public boolean removeIsolatedCandidates() {
+    public boolean removeStrandedCandidates() {
         boolean changed = false;
 
         final List<List<Integer>> clearedStraits = this.getClearedStraits();
@@ -79,7 +74,6 @@ public class Compartment {
     }
 
     private List<List<Integer>> getClearedStraits() {
-
         final List<List<Integer>> possibleStraits = this.getPossibleStraits();
 
         final Set<Integer> values = this.fields.stream().
@@ -112,13 +106,85 @@ public class Compartment {
     public List<Integer> getRequiredDigits() {
         final List<Integer> requiredDigits = new ArrayList<>();
         final List<List<Integer>> possibleStraits = this.getPossibleStraits();
+        final Map<Integer, AtomicInteger> amountOfNumber = new HashMap<>();
+
         for (final List<Integer> possibleStrait : possibleStraits) {
-            if (requiredDigits.isEmpty()) {
-                requiredDigits.addAll(possibleStrait);
-            } else {
-                requiredDigits.retainAll(possibleStrait);
+            for (final Integer integer : possibleStrait) {
+                amountOfNumber.computeIfAbsent(integer, ignore -> new AtomicInteger(0)).incrementAndGet();
             }
         }
+
+        amountOfNumber.forEach((key, value) -> {
+            if (value.get() == possibleStraits.size()) {
+                requiredDigits.add(key);
+            }
+        });
         return requiredDigits;
+    }
+
+    public Map<ValueAtIndex<Field>, Set<Integer>> detectIsolatedCandidates() {
+
+        final Map<ValueAtIndex<Field>, Set<Integer>> candidatesToRemove = new HashMap<>();
+
+        this.fields.forEach(field -> {
+            final Set<Integer> availableCandidates = this.computeAllCandidatesExcept(field);
+            field.value.getCandidates().forEach(candidate -> {
+                if (candidate == 1) {
+                    if (!availableCandidates.contains(candidate + 1)) {
+                        candidatesToRemove.computeIfAbsent(field, v -> new HashSet<Integer>()).add(candidate);
+                    }
+                }
+                if (candidate == this.boardSize) {
+                    if (!availableCandidates.contains(candidate - 1)) {
+                        candidatesToRemove.computeIfAbsent(field, v -> new HashSet<Integer>()).add(candidate);
+                    }
+                }
+                if (!availableCandidates.contains(candidate - 1) && !availableCandidates.contains(candidate + 1)) {
+                    candidatesToRemove.computeIfAbsent(field, v -> new HashSet<Integer>()).add(candidate);
+                }
+            });
+        });
+        return candidatesToRemove;
+    }
+
+    private Set<Integer> computeAllCandidatesExcept(final ValueAtIndex<Field> fieldToIgnore) {
+        return this.fields.stream() //
+                .filter(field -> !field.equals(fieldToIgnore)) //
+                .map(this::computeCandidatesAndValues) //
+                .flatMap(Set::stream) //
+                .collect(Collectors.toSet()); //
+    }
+
+    private Set<Integer> computeCandidatesAndValues(final ValueAtIndex<Field> field) {
+        final Set<Integer> set = new HashSet<>();
+        if (field.value.hasValue()) {
+            set.add(field.value.getValue());
+        } else {
+            set.addAll(field.value.getCandidates());
+        }
+        return set;
+    }
+
+    public boolean isValid() {
+        final List<Integer> values = this.getValues();
+        if (values.size() == this.fields.size()) {
+            return this.fields.stream().allMatch(field -> {
+                values.sort(Comparator.naturalOrder());
+                Integer previous = null;
+                for (final Integer value : values) {
+                    if (previous == null) {
+                        previous = value;
+                        continue;
+                    }
+                    if (previous + 1 != value) {
+                        return false;
+                    }
+                    previous = value;
+                }
+                return true;
+            });
+        } else {
+            return this.getClearedStraits().size() >= 1;
+        }
     }
 }

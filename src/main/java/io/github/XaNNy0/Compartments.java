@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Compartments {
     private final List<Compartment> compartments;
     private final Map<String, List<Compartment>> compartmentsByKey;
+    private final int boardSize;
 
-    public Compartments(final SquareArray<Field> fields) {
+    public Compartments(final SquareArray<Field> fields, final int boardSize) {
+        this.boardSize = boardSize;
         this.compartments = this.detectCompartments(fields);
         this.compartmentsByKey = this.compartments.stream().collect(Collectors.groupingBy(Compartment::getKey));
     }
@@ -30,11 +34,25 @@ public class Compartments {
                 .forEach(action); //
     }
 
+    public Stream<Compartment> stream() {
+        return this.compartments.stream();
+    }
+
     private List<Compartment> detectCompartments(final SquareArray<Field> fields) {
         final List<Compartment> compartments = new ArrayList<>();
         compartments.addAll(this.detectRowCompartments(fields));
         compartments.addAll(this.detectColumnCompartments(fields));
         return compartments;
+    }
+
+    public boolean areValid() {
+        final AtomicBoolean areValid = new AtomicBoolean(true);
+        this.compartments.forEach(compartment -> {
+            if (!compartment.isValid()) {
+                areValid.set(false);
+            }
+        });
+        return areValid.get();
     }
 
 
@@ -56,13 +74,13 @@ public class Compartments {
             }
             if (rowOrColumnField.value.isBlack()) {
                 if (!fieldIndexList.isEmpty()) {
-                    compartments.add(new Compartment(fieldIndexList));
+                    compartments.add(new Compartment(fieldIndexList, this.boardSize));
                     fieldIndexList.clear();
                 }
             }
         }
         if (!fieldIndexList.isEmpty()) {
-            compartments.add(new Compartment(fieldIndexList));
+            compartments.add(new Compartment(fieldIndexList, this.boardSize));
             fieldIndexList.clear();
         }
         return compartments;

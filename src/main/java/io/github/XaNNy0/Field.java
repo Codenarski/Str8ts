@@ -41,6 +41,10 @@ public class Field {
         return this.value;
     }
 
+    public void setValue(final int value) {
+        this.value = value;
+    }
+
     public boolean hasValue() {
         return this.getValue() != 0;
     }

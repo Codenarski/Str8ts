@@ -20,7 +20,6 @@ public class SquareArray<T> {
         this.t = t;
         this.rows = new HashMap<>();
         this.columns = new HashMap<>();
-
         this.forEach(valueAtIndex -> {
             this.rows.computeIfAbsent(valueAtIndex.row, ignore -> new ArrayList<>()).add(valueAtIndex);
             this.columns.computeIfAbsent(valueAtIndex.column, ignore -> new ArrayList<>()).add(valueAtIndex);
@@ -81,6 +80,4 @@ public class SquareArray<T> {
             consumer.accept(new ArrayList<>(this.columns.get(i)));
         }
     }
-
-
 }
