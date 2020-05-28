@@ -3,7 +3,6 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>io.github.XaNNy0</groupId>
     <artifactId>Str8ts</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -55,5 +54,4 @@
             <version>2.8.6</version>
         </dependency>
     </dependencies>
-
 </project>
