@@ -46,7 +46,7 @@ public class SquareArray<T> {
         return list.stream();
     }
 
-    <Target> SquareArray<Target> map(final BiFunction<T, Integer, Target> mapper, final Function<Integer, Target[][]> supplier) {
+    public <Target> SquareArray<Target> map(final BiFunction<T, Integer, Target> mapper, final Function<Integer, Target[][]> supplier) {
         final int length = this.t.length;
         final Target[][] target = supplier.apply(length);
         this.forEach(v -> target[v.row][v.column] = mapper.apply(this.t[v.row][v.column], length));
@@ -57,7 +57,7 @@ public class SquareArray<T> {
         final int length = this.t.length;
         for (int x = 0; x < length; x++) {
             for (int y = 0; y < length; y++) {
-                final ValueAtIndex<T> currentValueAtIndex = new ValueAtIndex<T>(x, y, this.t[x][y]);
+                final ValueAtIndex<T> currentValueAtIndex = new ValueAtIndex<>(x, y, this.t[x][y]);
                 if (condition.test(currentValueAtIndex.value)) {
                     consumer.accept(currentValueAtIndex);
                 }

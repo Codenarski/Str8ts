@@ -1,8 +1,6 @@
 package io.github.XaNNy0;
 
-
-import java.util.Comparator;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 public class Board {
@@ -16,26 +14,15 @@ public class Board {
         this.compartments = new Compartments(this.fields, this.fields.getArray().length);
     }
 
-    public boolean isCurrentStepSolved() {
-        return this.currentStepSolved;
-    }
-
-    public SolverAlgorithms getCurrentStep() {
-        return this.currentStep;
-    }
-
     public void nextStep() {
         if (this.currentStep == null) {
             this.currentStep = SolverAlgorithms.getFirst();
             this.currentStepSolved = this.currentStep.solve(this);
-            return;
         } else if (!this.currentStepSolved) {
             this.currentStep = SolverAlgorithms.getNext(this.currentStep);
             this.currentStepSolved = this.currentStep.solve(this);
-            return;
         } else {
             this.currentStep = null;
-            return;
         }
     }
 
@@ -52,22 +39,13 @@ public class Board {
     }
 
     public boolean checkCompartmentLogic() {
-        return this.compartments.stream().allMatch(compartment -> {
-            final List<Integer> values = compartment.getValues();
-            values.sort(Comparator.naturalOrder());
-            Integer previous = null;
-            for (final Integer value : values) {
-                if (previous == null) {
-                    previous = value;
-                    continue;
-                }
-                if (previous + 1 != value) {
-                    return false;
-                }
-                previous = value;
+        final AtomicBoolean isValid = new AtomicBoolean(true);
+        this.compartments.forEach(compartment -> {
+            if (!compartment.isValid()) {
+                isValid.set(false);
             }
-            return true;
         });
+        return isValid.get();
     }
 
     public boolean checkDistinctValues() {
@@ -88,7 +66,6 @@ public class Board {
         return !this.isSolved();
     }
 
-    //TODO: kann müll wenn isSolved da ist :)
     public boolean equals(final Board board) {
         for (int x = 0; x < this.fields.getArray().length; x++) {
             for (int y = 0; y < this.fields.getArray().length; y++) {

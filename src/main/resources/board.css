@@ -1,0 +1,24 @@
+.blackFieldWithValue {
+    -fx-control-inner-background: black;
+    -fx-text-inner-color: white;
+    -fx-alignment: center;
+    -fx-font-size: 35px;
+}
+
+.blackFieldWithoutValue {
+    -fx-control-inner-background: black;
+}
+
+.whiteFieldWithValue {
+    -fx-control-inner-background: white;
+    -fx-text-inner-color: black;
+    -fx-alignment: center;
+    -fx-font-size: 35px;
+}
+
+.whiteFieldWithoutValue {
+    -fx-control-inner-background: white;
+    -fx-text-inner-color: black;
+    -fx-alignment: center;
+    -fx-font-size: 8px;
+}

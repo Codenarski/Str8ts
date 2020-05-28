@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class FieldSpecJsonTest {
+public class IntegrationTest {
 
     private final Gson gson = new Gson();
 
@@ -20,7 +20,7 @@ public class FieldSpecJsonTest {
         }.getType();
         final String[][] fields = this.gson.fromJson("[[\"1W\", \"1B\"],[\"B\",\"W\"]]", type);
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class FieldSpecJsonTest {
                 "[\"3B\", \"8W\", \"W\", \"W\", \"B\", \"B\", \"W\", \"1W\", \"B\"],\n" +
                 "]", type));
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
         while (board.isNotSolved()) {
             board.nextStep();
@@ -59,7 +59,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
@@ -84,7 +84,7 @@ public class FieldSpecJsonTest {
                 "[\"B\", \"B\", \"5W\", \"6W\", \"B\", \"4B\", \"2W\", \"W\", \"B\"]," +
                 "]", type));
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
         while (board.isNotSolved()) {
             board.nextStep();
@@ -103,7 +103,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
@@ -127,7 +127,7 @@ public class FieldSpecJsonTest {
                 "[\"B\", \"4W\", \"3W\", \"6B\", \"B\", \"8W\", \"W\", \"B\", \"1B\"],\n" +
                 "]", type));
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
         while (board.isNotSolved()) {
             board.nextStep();
@@ -146,7 +146,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
@@ -171,7 +171,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
         while (board.isNotSolved()) {
@@ -191,7 +191,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
@@ -217,7 +217,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
         while (board.isNotSolved()) {
@@ -237,7 +237,7 @@ public class FieldSpecJsonTest {
                 "\t]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         Assert.assertTrue(board.equals(solutionBoard));
@@ -263,7 +263,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 
@@ -280,7 +280,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         while (board.isNotSolved()) {
@@ -310,7 +310,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 
@@ -327,7 +327,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         while (board.isNotSolved()) {
@@ -356,7 +356,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 
@@ -373,7 +373,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         while (board.isNotSolved()) {
@@ -402,7 +402,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 
@@ -419,7 +419,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<String>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> solutionFieldSpecs = new SquareArray<>(solutionFields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board solutionBoard = new Board(solutionFieldSpecs);
 
         while (board.isNotSolved()) {
@@ -448,7 +448,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 
@@ -477,7 +477,7 @@ public class FieldSpecJsonTest {
                 "]", type));
 
 
-        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<String>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
+        final SquareArray<FieldSpec> fieldSpecs = new SquareArray<>(fields).map((field, ignoreLength) -> new FieldSpec.StringFieldSpec(field), length -> new FieldSpec[length][length]);
         final Board board = new Board(fieldSpecs);
 
 

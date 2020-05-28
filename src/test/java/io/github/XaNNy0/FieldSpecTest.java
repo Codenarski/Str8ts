@@ -39,6 +39,9 @@ public class FieldSpecTest {
     @Test
     void testInValid() {
         Assert.assertThrows(NumberFormatException.class, () -> new FieldSpec.StringFieldSpec("BB"));
+        Assert.assertThrows(NumberFormatException.class, () -> new FieldSpec.StringFieldSpec("WW"));
+        Assert.assertThrows(NumberFormatException.class, () -> new FieldSpec.StringFieldSpec("B1"));
+        Assert.assertThrows(NumberFormatException.class, () -> new FieldSpec.StringFieldSpec("W7"));
         Assert.assertThrows(NumberFormatException.class, () -> new FieldSpec.StringFieldSpec(""));
     }
 }
